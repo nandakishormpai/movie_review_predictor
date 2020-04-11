@@ -201,6 +201,3 @@ loss, acc = model.evaluate(Xtest, ytest, verbose=0)
 print('Test Accuracy: %f' % (acc*100))
 
 model.save("my_model.h5")
-
-
-
