@@ -8,7 +8,7 @@ I worked on prediction script
 
 First clone it and what you have to do is paste your review in the text file my_review inside the file my_prediction 
 
-You should install tensorflow version 1.5.0 if you have not.
+You should install tensorflow version 1.5.0 or above if you have not.
 
 First run train.py
 
