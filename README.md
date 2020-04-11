@@ -1,4 +1,5 @@
 #movie_review_predictor
+
 Review analysis model
 
 Python script 'Train.py' used to train the model is made through the source i got from https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
