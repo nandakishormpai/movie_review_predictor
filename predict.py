@@ -1,18 +1,13 @@
 import numpy as np
 import tensorflow.python.keras
 from tensorflow.python.keras.preprocessing.text import Tokenizer
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.layers import Conv1D
-from tensorflow.python.keras.layers import Flatten
-from tensorflow.python.keras.layers import MaxPooling1D
-from tensorflow.python.keras.layers.embeddings import Embedding
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
-import tensorflow.python.keras
 from string import punctuation
 from os import listdir
 from collections import Counter
 from nltk.corpus import stopwords
+
+
 # load and evaluate a saved model
 from numpy import loadtxt
 from tensorflow.python.keras.models import load_model
