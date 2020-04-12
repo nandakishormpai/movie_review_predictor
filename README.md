@@ -2,7 +2,7 @@
 
 A Review analysis model
 
-Python script 'Train.py' used to train the model is made through the source i got from https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
+Python script 'Train.py' used to train the model is made through the source https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
 
 ## Instructions
 
