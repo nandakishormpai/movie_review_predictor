@@ -12,7 +12,6 @@ from nltk.corpus import stopwords
 from numpy import loadtxt
 from tensorflow.python.keras.models import load_model
 
-
 # load doc into memory
 def load_doc(filename):
 	# open the file as read only
