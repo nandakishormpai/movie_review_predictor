@@ -1,18 +1,28 @@
-#movie_review_predictor
+# Movie review predictor
 
-Review analysis model
+A Review analysis model
 
-Python script 'Train.py' used to train the model is made through the source i got from https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
+Python script 'Train.py' used to train the model is made through the source https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
 
+I worked on the Prediction script
+
+## Instructions
+=======
 I worked on the prediction script
 
-First clone it and what you have to do is paste your review in the text file my_review inside the file my_prediction 
+Clone the repo and paste your review in the text file my_review inside the folder my_prediction 
 
-You should install tensorflow version 1.5.0 or above if you have not.
+Run train.py
 
 Run predict.py
 
-I hope you get your result..thanks for using
+
+Hope you'll like it.
+Thanks for checking it out !
+=======
+
+## Dependencies
+Tensorflow version 1.5.0 or above.
 
 
 
