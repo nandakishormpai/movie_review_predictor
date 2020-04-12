@@ -8,11 +8,8 @@ I worked on the Prediction script
 
 ## Instructions
 =======
-I worked on the prediction script
 
 Clone the repo and paste your review in the text file my_review inside the folder my_prediction 
-
-Run train.py
 
 Run predict.py
 
