@@ -7,15 +7,13 @@ from tensorflow.python.keras.layers import Conv1D
 from tensorflow.python.keras.layers import Flatten
 from tensorflow.python.keras.layers import MaxPooling1D
 from tensorflow.python.keras.layers.embeddings import Embedding
-from tensorflow.python.keras.preprocessing.sequence import pad_sequences
-import tensorflow.python.keras
 from string import punctuation
 from os import listdir
 from collections import Counter
 from nltk.corpus import stopwords
-# load and evaluate a saved model
 from numpy import loadtxt
 from tensorflow.python.keras.models import load_model
+
 
 # load doc into memory
 def load_doc(filename):
@@ -71,12 +69,14 @@ vocab = Counter()
 # add all docs to vocab
 process_docs('txt_sentoken/neg', vocab, True)
 process_docs('txt_sentoken/pos', vocab, True)
-
-
+# print the size of the vocab
+print(len(vocab))
+# print the top words in the vocab
+print(vocab.most_common(50))
 
 min_occurane = 2
 tokens = [k for k,c in vocab.items() if c >= min_occurane]
-
+print(len(tokens))
 
 # save list to file
 def save_list(lines, filename):
@@ -91,7 +91,6 @@ def save_list(lines, filename):
 
 # save tokens to a vocabulary file
 save_list(tokens, 'vocab.txt')
-
 
 # load doc into memory
 def load_doc(filename):
@@ -153,35 +152,52 @@ tokenizer = Tokenizer()
 # fit the tokenizer on the documents
 tokenizer.fit_on_texts(train_docs)
 
+# sequence encode
+encoded_docs = tokenizer.texts_to_sequences(train_docs)
 
+# pad sequences
+max_length = max([len(s.split()) for s in train_docs])
+print("\n\n maxlenght="+str(max_length))
 
-	# load all docs in a directory
-def process_docs(vocab):
-	documents = list()
-	doc = load_doc("my_prediction/my_review.txt")
-	# clean doc
-	tokens = clean_doc(doc, vocab)
-	# add to list
-	documents.append(tokens)
-	return documents
+from tensorflow.python.keras.preprocessing.sequence import pad_sequences
+Xtrain = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
 
-predict_docs = process_docs(vocab)
+# define training labels
+ytrain = np.array([0 for _ in range(900)] + [1 for _ in range(900)])
 
+# load all test reviews
+positive_docs = process_docs('txt_sentoken/pos', vocab, False)
+negative_docs = process_docs('txt_sentoken/neg', vocab, False)
+test_docs = negative_docs + positive_docs
+# sequence encode
+encoded_docs = tokenizer.texts_to_sequences(test_docs)
+# pad sequences
+Xtest = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
+# define test labels
+ytest = np.array([0 for _ in range(100)] + [1 for _ in range(100)])
 
-encoded_docs = tokenizer.texts_to_sequences(predict_docs)
+print("\n pad_sequences : ",Xtest)
+print("\n ytest : ",ytest)
 
-X = pad_sequences(encoded_docs, maxlen=1317, padding='post')
+	
+# define vocabulary size (largest integer value)
+vocab_size = len(tokenizer.word_index) + 1
 
+# define model
+model = Sequential()
+model.add(Embedding(vocab_size, 100, input_length=max_length))
+model.add(Conv1D(filters=32, kernel_size=8, activation='relu'))
+model.add(MaxPooling1D(pool_size=2))
+model.add(Flatten())
+model.add(Dense(10, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+print(model.summary())
+# compile network
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+# fit network
+model.fit(Xtrain, ytrain, epochs=10, verbose=2)
+# evaluate
+loss, acc = model.evaluate(Xtest, ytest, verbose=0)
+print('Test Accuracy: %f' % (acc*100))
 
-# load model
-model = load_model('my_model.h5')
-
-
-y=model.predict_classes(np.array(X))
-
-
-if (y == [[1]]) :
-	print("\n good movie \n")
-else :
-	print("\n not recommended for humans \n")
-
+model.save("my_model.h5")
