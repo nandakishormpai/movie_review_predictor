@@ -6,6 +6,7 @@ from string import punctuation
 from os import listdir
 from collections import Counter
 from nltk.corpus import stopwords
+import pickle
 
 
 # load and evaluate a saved model
@@ -41,40 +42,6 @@ def clean_doc(doc, vocab):
 	return tokens
 
 	# load all docs in a directory
-def process_docs(directory, vocab, is_trian):
-	documents = list()
-	# walk through all files in the folder
-	for filename in listdir(directory):
-		# skip any reviews in the test set
-		if is_trian and filename.startswith('cv9'):
-			continue
-		if not is_trian and not filename.startswith('cv9'):
-			continue
-		# create the full path of the file to open
-		path = directory + '/' + filename
-		# load the doc
-		doc = load_doc(path)
-		# clean doc
-		tokens = clean_doc(doc, vocab)
-		# add to list
-		documents.append(tokens)
-	return documents
-
-# load all training reviews
-positive_docs = process_docs('txt_sentoken/pos', vocab, True)
-negative_docs = process_docs('txt_sentoken/neg', vocab, True)
-train_docs = negative_docs + positive_docs
-
-
-
-# create the tokenizer
-tokenizer = Tokenizer()
-# fit the tokenizer on the documents
-tokenizer.fit_on_texts(train_docs)
-
-
-
-	# load all docs in a directory
 def process_docs(vocab):
 	documents = list()
 	doc = load_doc("my_prediction/my_review.txt")
@@ -86,6 +53,8 @@ def process_docs(vocab):
 
 predict_docs = process_docs(vocab)
 
+with open('tokenizer.pickle', 'rb') as handle:
+    tokenizer = pickle.load(handle)
 
 encoded_docs = tokenizer.texts_to_sequences(predict_docs)
 
