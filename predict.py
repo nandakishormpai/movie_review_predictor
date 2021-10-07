@@ -25,9 +25,7 @@ def load_doc(filename):
 
 # load the vocabulary
 vocab_filename = 'vocab.txt'
-vocab = load_doc(vocab_filename)
-vocab = vocab.split()
-vocab = set(vocab)
+vocab = set(load_doc(vocab_filename).split())
 
 # turn a doc into clean tokens
 def clean_doc(doc, vocab):
